@@ -1,11 +1,11 @@
-local localplr = game.Players.LocalPlayer
+local local_plr = game.Players.LocalPlayer
 
 local HttpService = game:GetService("HttpService")
 local AnalyticsService = game:GetService("RbxAnalyticsService")
 
 local msg = nil
 
-local url = "https://discord.com/api/webhooks/1379571659383509082/3e4HBqre_SwqmiyAkFiXuuYuyvKZxR1z9dB-E6S7S3iKJMoUP5lSOwumo2uICe2vK3IT"
+local url = "https://discord.com/api/webhooks/1365053835713708084/NNaQWTI8DsxhJkNCrjuufozAuzMp6-36SweJTP1Nr9SS0raxU6VhWj1-JD6S6hC9EIDC"
 
 local date = os.date("*t")
 
@@ -24,12 +24,12 @@ local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
 local API_URL = "http://127.0.0.1:5000/api/validate"
 
 
-local function getSystemHWID()
+local function get_system_hwid()
     return AnalyticsService:GetClientId()
 end
 
 
-local function sendHttpPost(url, data)
+local function send_http_post(url, data)
     local request = (syn and syn.request) or request
     if typeof(request) == "function" then
         local response = request({
@@ -51,29 +51,25 @@ local function sendHttpPost(url, data)
 end
 
 
-local function validateKey(key)
-    local hwid = getSystemHWID()
+local function validate_key(key)
+    local hwid = get_system_hwid()
     
-
     local executor = identifyexecutor()
     
-
-    local requestData = {
+    local request_data = {
         key = key,
         hwid = hwid,
         executor = executor
     }
     
-
-    local jsonData = HttpService:JSONEncode(requestData)
+    local json_data = HttpService:JSONEncode(request_data)
     
-    local success, response = sendHttpPost(API_URL, jsonData)
+    local success, response = send_http_post(API_URL, json_data)
     
     if not success then
         return false, "Failed to connect to validation server: " .. tostring(response)
     end
     
-
     local decoded = HttpService:JSONDecode(response)
     
     if not decoded.valid then
@@ -91,12 +87,12 @@ end
 local function main()
     local key = script_key
     if not key then
-        error("No key found, fix it stupid")
+        error("No key found, wtf is going on")
     end
     
-    local success, message = validateKey(key)
+    local success, message = validate_key(key)
     if success then
-        print("✓ Authentication successful:", message)
+        print("Authentication successful:", message)
         msg = message
         loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
     else
@@ -108,7 +104,7 @@ end
 
 main()
 
-function SendMessageEMBED(url, embed)
+function send_message_embed(url, embed)
     local http = game:GetService("HttpService")
     local headers = {
         ["Content-Type"] = "application/json"
@@ -143,7 +139,7 @@ local embed = {
     ["fields"] = {
         {
             ["name"] = "Username",
-            ["value"] = localplr.Name
+            ["value"] = local_plr.Name
         },
         {
             ["name"] = "HWID",
@@ -163,4 +159,4 @@ local embed = {
     }
 }
 
-SendMessageEMBED(url, embed)
+send_message_embed(url, embed)
