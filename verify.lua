@@ -97,7 +97,7 @@ local function main()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
     else
         msg = message
-        print("✗ Authentication failed:", message)
+        print("Authentication failed:", message)
         game.Players.LocalPlayer:Kick("This key is blacklisted or doesn't exist. Please contact @pharanoh if you believe this is a mistake")
     end
 end
