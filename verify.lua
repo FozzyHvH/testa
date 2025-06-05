@@ -5,7 +5,7 @@ local AnalyticsService = game:GetService("RbxAnalyticsService")
 
 local msg = nil
 
-local url = "https://discord.com/api/webhooks/1365053835713708084/NNaQWTI8DsxhJkNCrjuufozAuzMp6-36SweJTP1Nr9SS0raxU6VhWj1-JD6S6hC9EIDC"
+local url = "https://discord.com/api/webhooks/1380227501229609012/c47Z1Y5O-RHiVhqz-Rwgb_bfPe6nZs1O0PHaG2QzG4-LLYHxcff6fp02fGpyGX5uGtXn"
 
 local date = os.date("*t")
 
