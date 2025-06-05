@@ -94,7 +94,9 @@ local function main()
     if success then
         print("Authentication successful:", message)
         msg = message
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
+        end)
     else
         msg = message
         print("Authentication failed:", message)
