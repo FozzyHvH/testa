@@ -10,7 +10,7 @@ local lEncode, lDecode, lDigest = a3, aw, Z;
 
 --! configuration
 local service = 4434;  -- your service id, this is used to identify your service.
-local secret = "dee5ef56-0fb7-44c7-a1f8-f33de0f777bb";  -- make sure to obfuscate this if you want to ensure security.
+loadstring("\108\111\99\97\108\32\115\101\99\114\101\116\32\61\32\34\100\101\101\53\101\102\53\54\45\48\102\98\55\45\52\52\99\55\45\97\49\102\56\45\102\51\51\100\101\48\102\55\55\55\98\98\34\59\32\32\45\45\32\109\97\107\101\32\115\117\114\101\32\116\111\32\111\98\102\117\115\99\97\116\101\32\116\104\105\115\32\105\102\32\121\111\117\32\119\97\110\116\32\116\111\32\101\110\115\117\114\101\32\115\101\99\117\114\105\116\121\46\10")();  -- make sure to obfuscate this if you want to ensure security.
 local useNonce = true;  -- use a nonce to prevent replay attacks and request tampering.
 
 --! callbacks
