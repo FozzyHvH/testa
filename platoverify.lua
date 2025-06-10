@@ -10,7 +10,7 @@ local lEncode, lDecode, lDigest = a3, aw, Z;
 
 --! configuration
 local service = 4434;  -- your service id, this is used to identify your service.
-loadstring("\108\111\99\97\108\32\115\101\99\114\101\116\32\61\32\34\100\101\101\53\101\102\53\54\45\48\102\98\55\45\52\52\99\55\45\97\49\102\56\45\102\51\51\100\101\48\102\55\55\55\98\98\34\59\32\32\45\45\32\109\97\107\101\32\115\117\114\101\32\116\111\32\111\98\102\117\115\99\97\116\101\32\116\104\105\115\32\105\102\32\121\111\117\32\119\97\110\116\32\116\111\32\101\110\115\117\114\101\32\115\101\99\117\114\105\116\121\46\10")();  -- make sure to obfuscate this if you want to ensure security.
+local secret = "dee5ef56-0fb7-44c7-a1f8-f33de0f777bb";  -- make sure to obfuscate this if you want to ensure security.
 local useNonce = true;  -- use a nonce to prevent replay attacks and request tampering.
 
 --! callbacks
@@ -310,3 +310,98 @@ else
 end
 ]]--
 -------------------------------------------------------------------------------
+
+--! start of script
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+local function noti(title, content, duration)
+    Fluent:Notify({
+        Title = title,
+        Content = content,
+        Duration = duration
+    })
+end
+
+local key_file = "key.txt"
+
+local saved_key = nil
+if pcall(function() return readfile end) and isfile and isfile(key_file) then
+    saved_key = readfile(key_file)
+end
+
+local function save_key(key)
+    if pcall(function() return writefile end) then
+        writefile(key_file, key)
+    end
+end
+
+local function load_main_script()
+    print("loading main script...")
+    -- loadstring(game:HttpGet("main script"))()
+end
+
+if saved_key and saved_key ~= "" then
+    local valid = verifyKey(saved_key)
+    if valid then
+        noti("Key Results", "Key Valid", 3)
+        load_main_script()
+        return
+    end
+end
+
+local state = {
+    key = nil
+}
+
+local window = Fluent:CreateWindow({
+    Title = "Key System ",
+    SubTitle = "@pharanoh",
+    TabWidth = 0,
+    Size = UDim2.fromOffset(320, 240),
+    Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+})
+
+local tabs = {
+    main = window:AddTab({ Title = "key", Icon = "" }),
+}
+
+do
+    local input = tabs.main:AddInput("key", {
+        Title = "key",
+        Default = "",
+        Placeholder = "enter your key here",
+        Numeric = false,
+        Finished = false,
+        Callback = function(v)
+            state.key = v
+        end
+    })
+    local button = tabs.main:AddButton({
+        Title = "verify key",
+        Callback = function()
+            local key = state.key
+            if key and key ~= "" then
+                local success = verifyKey(key)
+                if success then
+                    print("key is valid.")
+                    noti("Key Results", "Key Valid.", 3)
+                    save_key(key)
+                    load_main_script()
+                    task.wait(3)
+                    window:Destroy()
+                else
+                    print("key is invalid.")
+                    noti("Key Results", "Key Invalid.", 3)
+                end
+            else
+                print("please enter a key.")
+                noti("Key Results", "No key found.", 3)
+            end
+        end
+    })
+end
+
+window:SelectTab(1)
