@@ -515,7 +515,7 @@ end
         }
         
         if not isfile(library.directory .. "/fonts/main_encoded.ttf") then 
-            writefile(library.directory .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
+            --writefile(library.directory .. "/fonts/main_encoded.ttf", http_service:JSONEncode(tahoma))
         end 
         
         library.font = Font.new(getcustomasset(library.directory .. "/fonts/main_encoded.ttf"), Enum.FontWeight.Regular)
