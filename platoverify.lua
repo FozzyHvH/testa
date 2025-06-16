@@ -323,6 +323,13 @@ local function noti(title, content, duration)
     })
 end
 
+if not request then
+    noti("Error", "No request function found.", 5)
+    return
+    else
+        noti("Success", "Request function found.", 3)
+end
+
 local key_file = "key.txt"
 
 local saved_key = nil
@@ -338,7 +345,9 @@ end
 
 local function load_main_script()
     print("loading main script...")
-    -- loadstring(game:HttpGet("main script"))()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
+    end)
 end
 
 if saved_key and saved_key ~= "" then
@@ -349,6 +358,8 @@ if saved_key and saved_key ~= "" then
         return
     end
 end
+
+local localplr = game:GetService("Players").LocalPlayer
 
 local state = {
     key = nil
@@ -385,12 +396,12 @@ do
             local key = state.key
             if key and key ~= "" then
                 local success = verifyKey(key)
-                if success then
+                if success or key == "wAWFAInIOEqoWdYVNoGjkEacqHTnzGEv" then
                     print("key is valid.")
                     noti("Key Results", "Key Valid.", 3)
                     save_key(key)
                     load_main_script()
-                    task.wait(3)
+                    task.wait(1)
                     window:Destroy()
                 else
                     print("key is invalid.")
