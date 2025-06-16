@@ -418,7 +418,3 @@ end
 
 
 window:SelectTab(1)
-
-return function(tabs, load_main_script)
-
-end
