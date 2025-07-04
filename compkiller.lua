@@ -94,6 +94,10 @@ local HyperEscape = {
         FillColor = Color3.fromRGB(255, 255, 255);
     };
     };
+    Misc = {
+        bhopenabled = false,
+        bhopspeed = 30,
+    }
 };
 
 
@@ -262,9 +266,10 @@ local ESP = Window:DrawTab({
 	Icon = "eye",
 });
 
-local World = Window:DrawTab({
-    Name = "World",
-    Icon = "palette",
+local Misc = Window:DrawTab({
+    Name = "Misc",
+    Icon = "box",
+    -- Icon = "palette", -- // could use this for world visuals but temporarily im changing it to just misc
 })
 
 Window:DrawCategory({
@@ -472,6 +477,7 @@ do -- aimbot right section
 end
 
 do -- exploits
+    if not game.PlaceId == 301549746 then return end -- if this doesnt work then lord have mercy
     local exploits = Exploits:DrawSection({
         Name = "Exploits",
         Position = "left"
@@ -595,6 +601,22 @@ do -- exploits info section fuck you compkiller ui
     })
 end
 
+do -- misc
+    local misc = Misc:DrawSection({
+        Name = "Misc",
+        Position = "left"
+    })
+
+    misc:AddToggle({
+        Name = "Queue on teleport",
+        Default = true,
+        Flag = "queue_on_teleport",
+
+        Callback = function()
+            queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/compkiller.lua'))()")
+        end
+    })
+end
 
 do -- ESP left section
     local esp_left = ESP:DrawSection({
@@ -1405,6 +1427,43 @@ players.PlayerAdded:Connect(function(plr)
         LoadESP(plr);
     end
 end)
+
+
+game:GetService("RunService").RenderStepped:Conenct(function()
+    if HyperEscape.Misc.bhopenabled and UIS:IsKeyDown("Space") then
+        local localplr = game.Players.LocalPlayer
+        if localplr.Character:FindFirstChild("jumpcd") then
+            localplr.Character.jumpcd:Destroy()
+        end
+        localplr.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+    
+        local vel = Vector3.zero
+    
+        if UIS:IsKeyDown("W") then
+            vel = vel + workspace.CurrentCamera.CFrame.LookVector
+        end
+        if UIS:IsKeyDown("S") then
+            vel = vel - workspace.CurrentCamera.CFrame.LookVector
+        end
+        if UIS:IsKeyDown("A") then
+            vel = vel - workspace.CurrentCamera.CFrame.RightVector
+        end
+        if UIS:IsKeyDown("D") then
+            vel = vel + workspace.CurrentCamera.CFrame.RightVector
+        end
+    
+        if vel.Magnitude > 0 then
+            vel = Vector3.new(vel.X, 0, vel.Z)
+            localplr.Character.HumanoidRootPart.Velocity = (vel.Unit * (HyperEscape.Misc.bhopspeed * 1.3)) + Vector3.new(0, localplr.Character.HumanoidRootPart.Velocity.Y, 0)
+            localplr.Character.Humanoid.Jump = true
+        end
+    end
+end)
+
+
+
+
+
 
 
 
