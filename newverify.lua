@@ -32,7 +32,7 @@ local scriptwin = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
-local scriptstab = scriptwin:AddTab({ Title = "scripts", Icon = "" })
+local scriptstab = scriptwin:AddTab({ Title = "", Icon = "" })
 
 scriptstab:AddButton({
     Title = "Compkiller",
