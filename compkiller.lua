@@ -11,6 +11,7 @@ local mouseLocation = UIS.GetMouseLocation;
 local CoreGui = game:FindFirstChild("CoreGui");
 local replicated_storage = game:GetService("ReplicatedStorage");
 local weapons = replicated_storage:FindFirstChild("Weapons")
+local localplr = game.Players.LocalPlayer
 
 -- // table
 
@@ -58,42 +59,43 @@ local HyperEscape = {
     
         CharacterSize = Vector2.new(5,6);
     
-    Box = {
-        Box = false;
-        Name = false;
-        Distance = false;
-        Health = false; -- This Is Text
-        HealthBar = false;
+        Box = {
+            Box = false;
+            Name = false;
+            Distance = false;
+            Health = false; -- This Is Text
+            HealthBar = false;
 
-        Color = Color3.fromRGB(255, 255, 255);
+            Color = Color3.fromRGB(255, 255, 255);
 
-        Outline = false;
-        OutlineColor = Color3.fromRGB(0,0,0);	
+            Outline = false;
+            OutlineColor = Color3.fromRGB(0,0,0);	
+        };
+
+        Tracer = {
+            TeamColor = false;
+
+            Tracer = false;
+            Color = Color3.fromRGB(255, 255, 255);
+
+            Outline = false;
+            OutlineColor = Color3.fromRGB(0, 0, 0);
+        };
+
+        Hilights = { -- TODO: Arsenal 
+
+            Hilights = false;
+
+            AllWaysVisible = false;			
+
+            OutlineTransparency = 0.5;
+            FillTransparency = 0.5;
+
+            OutlineColor = Color3.fromRGB(255, 0, 0);
+            FillColor = Color3.fromRGB(255, 255, 255);
+        };
     };
 
-    Tracer = {
-        TeamColor = false;
-
-        Tracer = false;
-        Color = Color3.fromRGB(255, 255, 255);
-
-        Outline = false;
-        OutlineColor = Color3.fromRGB(0, 0, 0);
-    };
-
-    Hilights = { -- TODO: Arsenal 
-
-        Hilights = false;
-
-        AllWaysVisible = false;			
-
-        OutlineTransparency = 0.5;
-        FillTransparency = 0.5;
-
-        OutlineColor = Color3.fromRGB(255, 0, 0);
-        FillColor = Color3.fromRGB(255, 255, 255);
-    };
-    };
     Misc = {
         bhopenabled = false,
         bhopspeed = 30,
@@ -625,17 +627,6 @@ do -- misc
             HyperEscape.Misc.bhopspeed = v
         end,
     })
-
-
-    misc:AddToggle({
-        Name = "Queue on teleport",
-        Default = true,
-        Flag = "queue_on_teleport",
-
-        Callback = function()
-            queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/compkiller.lua'))()")
-        end
-    })
 end
 
 do -- ESP left section
@@ -1021,6 +1012,38 @@ end
 
 
 -- Functionality
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if HyperEscape.Misc.bhopenabled and UIS:IsKeyDown("Space") then
+        if localplr.Character:FindFirstChild("jumpcd") then
+            localplr.Character.jumpcd:Destroy()
+        end
+        localplr.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+    
+        local vel = Vector3.zero
+    
+        if UIS:IsKeyDown("W") then
+            vel = vel + workspace.CurrentCamera.CFrame.LookVector
+        end
+        if UIS:IsKeyDown("S") then
+            vel = vel - workspace.CurrentCamera.CFrame.LookVector
+        end
+        if UIS:IsKeyDown("A") then
+            vel = vel - workspace.CurrentCamera.CFrame.RightVector
+        end
+        if UIS:IsKeyDown("D") then
+            vel = vel + workspace.CurrentCamera.CFrame.RightVector
+        end
+    
+        if vel.Magnitude > 0 then
+            vel = Vector3.new(vel.X, 0, vel.Z)
+            localplr.Character.HumanoidRootPart.Velocity = (vel.Unit * (HyperEscape.Misc.bhopspeed * 1.3)) + Vector3.new(0, localplr.Character.HumanoidRootPart.Velocity.Y, 0)
+            localplr.Character.Humanoid.Jump = true
+        end
+    end
+end)
+
+
 
 local IsArsenal = false;
 if game.PlaceId == 286090429 then
@@ -1447,43 +1470,6 @@ players.PlayerAdded:Connect(function(plr)
         LoadESP(plr);
     end
 end)
-
-
-game:GetService("RunService").RenderStepped:Conenct(function()
-    if HyperEscape.Misc.bhopenabled and UIS:IsKeyDown("Space") then
-        local localplr = game.Players.LocalPlayer
-        if localplr.Character:FindFirstChild("jumpcd") then
-            localplr.Character.jumpcd:Destroy()
-        end
-        localplr.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
-    
-        local vel = Vector3.zero
-    
-        if UIS:IsKeyDown("W") then
-            vel = vel + workspace.CurrentCamera.CFrame.LookVector
-        end
-        if UIS:IsKeyDown("S") then
-            vel = vel - workspace.CurrentCamera.CFrame.LookVector
-        end
-        if UIS:IsKeyDown("A") then
-            vel = vel - workspace.CurrentCamera.CFrame.RightVector
-        end
-        if UIS:IsKeyDown("D") then
-            vel = vel + workspace.CurrentCamera.CFrame.RightVector
-        end
-    
-        if vel.Magnitude > 0 then
-            vel = Vector3.new(vel.X, 0, vel.Z)
-            localplr.Character.HumanoidRootPart.Velocity = (vel.Unit * (HyperEscape.Misc.bhopspeed * 1.3)) + Vector3.new(0, localplr.Character.HumanoidRootPart.Velocity.Y, 0)
-            localplr.Character.Humanoid.Jump = true
-        end
-    end
-end)
-
-
-
-
-
 
 
 
