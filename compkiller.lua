@@ -608,6 +608,27 @@ do -- misc
     })
 
     misc:AddToggle({
+        Name = "Bhop Enabled",
+        Flag = "bhop_enabled",
+        Default = HyperEscape.Misc.bhopenabled,
+        Callback = function(v)
+            HyperEscape.Misc.bhopenabled = v
+        end,
+    })
+    
+    misc:AddSlider({
+        Name = "Bhop Speed",
+        Min = 1,
+        Max = 100,
+        Default = HyperEscape.Misc.bhopspeed,
+        Flag = "bhop_speed",
+        Callback = function(v)
+            HyperEscape.Misc.bhopspeed = v
+        end,
+    })
+
+
+    misc:AddToggle({
         Name = "Queue on teleport",
         Default = true,
         Flag = "queue_on_teleport",
