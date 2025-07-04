@@ -343,10 +343,9 @@ local function save_key(key)
     end
 end
 
-local function load_main_script()
-    print("loading main script...")
+local function scriptwindow()
     pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/oldanduseless.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/FozzyHvH/testa/refs/heads/main/newverify.lua"))()
     end)
 end
 
@@ -354,7 +353,7 @@ if saved_key and saved_key ~= "" then
     local valid = verifyKey(saved_key)
     if valid then
         noti("Key Results", "Key Valid", 3)
-        load_main_script()
+        scriptwindow()
         return
     end
 end
@@ -364,6 +363,7 @@ local localplr = game:GetService("Players").LocalPlayer
 local state = {
     key = nil
 }
+
 
 local window = Fluent:CreateWindow({
     Title = "Key System ",
@@ -377,6 +377,7 @@ local window = Fluent:CreateWindow({
 
 local tabs = {
     main = window:AddTab({ Title = "key", Icon = "" }),
+    scripts = window:AddTab({ Title = "scripts", Icon = "" }),
 }
 
 do
@@ -400,9 +401,12 @@ do
                     print("key is valid.")
                     noti("Key Results", "Key Valid.", 3)
                     save_key(key)
-                    load_main_script()
                     task.wait(1)
                     window:Destroy()
+                    task.spawn(function()
+                        task.wait(0.5)
+                        scriptwindow()
+                    end)
                 else
                     print("key is invalid.")
                     noti("Key Results", "Key Invalid.", 3)
@@ -414,7 +418,5 @@ do
         end
     })
 end
-
-
 
 window:SelectTab(1)
