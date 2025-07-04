@@ -477,7 +477,6 @@ do -- aimbot right section
 end
 
 do -- exploits
-    if not game.PlaceId == 301549746 then return end -- if this doesnt work then lord have mercy
     local exploits = Exploits:DrawSection({
         Name = "Exploits",
         Position = "left"
