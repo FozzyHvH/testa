@@ -23,10 +23,16 @@ local function load_primordial()
 end
 
 local choice_file = "script_choice.txt"
+local remember_file = "remember_choice.txt"
 
 local saved_choice = nil
+local remember_choice = false
+
 if pcall(function() return readfile end) and isfile and isfile(choice_file) then
     saved_choice = readfile(choice_file)
+end
+if pcall(function() return readfile end) and isfile and isfile(remember_file) then
+    remember_choice = readfile(remember_file) == "true"
 end
 
 local function save_choice(choice)
@@ -35,7 +41,13 @@ local function save_choice(choice)
     end
 end
 
-if saved_choice and saved_choice ~= "" then
+local function save_remember_choice(value)
+    if pcall(function() return writefile end) then
+        writefile(remember_file, value and "true" or "false")
+    end
+end
+
+if remember_choice and saved_choice and saved_choice ~= "" then
     if saved_choice == "Compkiller" then
         load_comp_killer()
         return
@@ -63,6 +75,11 @@ local scriptstab = scriptwin:AddTab({ Title = "Scripts", Icon = "" })
 scriptstab:AddButton({
     Title = "Compkiller",
     Callback = function()
+        if remember_choice then
+            save_choice("Compkiller")
+        else
+            save_choice("")
+        end
         load_comp_killer()
         task.wait(1)
         scriptwin:Destroy()
@@ -71,6 +88,11 @@ scriptstab:AddButton({
 scriptstab:AddButton({
     Title = "Primordial",
     Callback = function()
+        if remember_choice then
+            save_choice("Primordial")
+        else
+            save_choice("")
+        end
         load_primordial()
         task.wait(1)
         scriptwin:Destroy()
@@ -78,9 +100,10 @@ scriptstab:AddButton({
 })
 scriptstab:AddToggle({
     Title = "Remember Choice?",
-    Default = false,
+    Default = remember_choice,
     Callback = function(v)
         remember_choice = v
+        save_remember_choice(v)
     end
 })
 
