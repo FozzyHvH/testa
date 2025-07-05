@@ -22,6 +22,32 @@ local function load_primordial()
     end)
 end
 
+local choice_file = "script_choice.txt"
+
+local saved_choice = nil
+if pcall(function() return readfile end) and isfile and isfile(choice_file) then
+    saved_choice = readfile(choice_file)
+end
+
+local function save_choice(choice)
+    if pcall(function() return writefile end) then
+        writefile(choice_file, choice)
+    end
+end
+
+if saved_choice and saved_choice ~= "" then
+    if saved_choice == "Compkiller" then
+        load_comp_killer()
+        return
+    elseif saved_choice == "Primordial" then
+        load_primordial()
+        return
+    end
+end
+
+local remember_choice = false
+
+
 local scriptwin = Fluent:CreateWindow({
     Title = "Select Script",
     Subtitle = nil,
@@ -48,6 +74,13 @@ scriptstab:AddButton({
         load_primordial()
         task.wait(1)
         scriptwin:Destroy()
+    end
+})
+scriptstab:AddToggle({
+    Title = "Remember Choice?",
+    Default = false,
+    Callback = function(v)
+        remember_choice = v
     end
 })
 
