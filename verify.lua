@@ -1,5 +1,3 @@
-
-
 local local_plr = game.Players.LocalPlayer
 
 local HttpService = game:GetService("HttpService")
