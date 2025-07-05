@@ -1,3 +1,9 @@
+if identifyexecutor() ~= "AWP" then
+    game:GetService("Players").LocalPlayer:Kick()
+    return
+end
+
+
 local local_plr = game.Players.LocalPlayer
 
 local HttpService = game:GetService("HttpService")
