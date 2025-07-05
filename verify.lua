@@ -1,4 +1,4 @@
-if identifyexecutor ~= "AWP" then return end
+
 
 local local_plr = game.Players.LocalPlayer
 
